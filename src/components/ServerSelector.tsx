@@ -90,7 +90,7 @@ export default function ServerSelector({ onSelect, hovered, setHovered }: Props)
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-3">
             <img
-              src="https://cdn.poehali.dev/projects/c58b9026-4e75-48ec-a5cf-93c482f03610/files/3f6aab5e-6dfe-494d-b566-928673a08dae.jpg"
+              src="https://cdn.poehali.dev/projects/c58b9026-4e75-48ec-a5cf-93c482f03610/files/6411c323-188e-43dd-ab31-60b784e88c8a.jpg"
               alt="Gamai Club"
               className="w-14 h-14 rounded-lg object-cover"
               style={{ imageRendering: "pixelated" }}
