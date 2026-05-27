@@ -6,8 +6,14 @@ interface Props {
   onShopClick: () => void;
 }
 
+const TRAILER_IDS = {
+  anarchy: "-ioHuCZryTg",
+  classic: "5QU20HMPZ3M",
+};
+
 export default function HeroSection({ server, onShopClick }: Props) {
   const [showGuide, setShowGuide] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const themeColor = server === "anarchy" ? "#ff4500" : "#f97316";
@@ -23,24 +29,25 @@ export default function HeroSection({ server, onShopClick }: Props) {
     <section className="relative min-h-screen flex items-center justify-center z-10 pt-16">
       <div className="text-center px-6 max-w-4xl mx-auto">
         {/* Tag */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 font-rajdhani text-sm uppercase tracking-widest hero-reveal"
+        <div
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8 font-rajdhani text-sm uppercase tracking-widest hero-reveal"
           style={{
             background: `rgba(${server === "anarchy" ? "255,69,0" : "249,115,22"},0.12)`,
             border: `1px solid ${themeColor}40`,
             color: themeColor,
-          }}>
+          }}
+        >
           <div className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: themeColor }} />
           {server === "anarchy" ? "Сервер Анархия · Версия 1.21.1" : "Сервер Классика · Версия 1.21.1"}
         </div>
 
         {/* Main title */}
-        <h1 className="font-oswald font-black text-white hero-reveal-delay leading-none mb-4"
-          style={{ fontSize: "clamp(3rem, 10vw, 7rem)", letterSpacing: "0.03em" }}>
+        <h1
+          className="font-oswald font-black text-white hero-reveal-delay leading-none mb-4"
+          style={{ fontSize: "clamp(3rem, 10vw, 7rem)", letterSpacing: "0.03em" }}
+        >
           GAMAI{" "}
-          <span
-            className="glow-text"
-            style={{ color: themeColor, display: "block" }}
-          >
+          <span className="glow-text" style={{ color: themeColor, display: "block" }}>
             {server === "anarchy" ? "АНАРХИЯ" : "КЛАССИКА"}
           </span>
         </h1>
@@ -61,15 +68,29 @@ export default function HeroSection({ server, onShopClick }: Props) {
           >
             ▶ Начать играть
           </button>
+
+          {/* VIDEO button */}
           <button
-            className="font-oswald uppercase font-semibold text-white/80 px-8 py-4 rounded-xl text-lg tracking-wider transition-all hover:text-white"
+            className="group relative font-oswald uppercase font-semibold text-white px-8 py-4 rounded-xl text-lg tracking-wider transition-all overflow-hidden"
             style={{
-              background: "rgba(255,255,255,0.06)",
-              border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(255,255,255,0.05)",
+              border: `1px solid ${themeColor}40`,
             }}
-            onClick={onShopClick}
+            onClick={() => setShowVideo(true)}
           >
-            🛒 Магазин
+            <span
+              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
+              style={{ background: `${themeColor}12` }}
+            />
+            <span className="relative flex items-center gap-2">
+              <span
+                className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: themeColor }}
+              >
+                <Icon name="Play" size={12} className="text-white ml-0.5" />
+              </span>
+              Видео
+            </span>
           </button>
         </div>
 
@@ -114,11 +135,72 @@ export default function HeroSection({ server, onShopClick }: Props) {
         <Icon name="ChevronDown" size={20} className="text-white/50 animate-bounce" />
       </div>
 
-      {/* How to play guide modal */}
+      {/* VIDEO MODAL */}
+      {showVideo && (
+        <div
+          className="fixed inset-0 z-[9000] flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(12px)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowVideo(false); }}
+        >
+          <div className="relative w-full max-w-4xl animate-scale-in">
+            {/* Decorative frame */}
+            <div
+              className="absolute -inset-1 rounded-2xl opacity-60"
+              style={{
+                background: `linear-gradient(135deg, ${themeColor}, transparent, ${themeColor})`,
+                padding: "1px",
+              }}
+            />
+            <div
+              className="relative rounded-2xl overflow-hidden"
+              style={{
+                border: `2px solid ${themeColor}60`,
+                boxShadow: `0 0 80px ${glowColor}, 0 0 160px ${glowColor}40`,
+              }}
+            >
+              {/* Top bar */}
+              <div
+                className="flex items-center justify-between px-5 py-3"
+                style={{ background: `linear-gradient(135deg, rgba(10,3,0,0.99), rgba(5,0,0,0.99))`, borderBottom: `1px solid ${themeColor}30` }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full" style={{ background: themeColor }} />
+                  <span className="font-oswald text-white uppercase tracking-wider text-sm">
+                    {server === "anarchy" ? "💀 Анархия" : "🌲 Классика"} — Трейлер сервера
+                  </span>
+                </div>
+                <button
+                  onClick={() => setShowVideo(false)}
+                  className="text-white/40 hover:text-white transition-colors p-1"
+                >
+                  <Icon name="X" size={20} />
+                </button>
+              </div>
+              {/* Video */}
+              <div className="relative" style={{ paddingBottom: "56.25%" }}>
+                <iframe
+                  src={`https://www.youtube.com/embed/${TRAILER_IDS[server]}?autoplay=1&rel=0&modestbranding=1`}
+                  allow="autoplay; fullscreen; encrypted-media"
+                  allowFullScreen
+                  className="absolute inset-0 w-full h-full"
+                  title="Трейлер сервера"
+                  style={{ background: "#000" }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* HOW TO PLAY MODAL */}
       {showGuide && (
-        <div className="modal-backdrop" onClick={(e) => e.target === e.currentTarget && setShowGuide(false)}>
+        <div
+          className="fixed inset-0 z-[9000] flex items-center justify-center p-4"
+          style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(8px)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowGuide(false); }}
+        >
           <div
-            className="relative w-full max-w-lg mx-4 rounded-2xl overflow-hidden"
+            className="relative w-full max-w-lg mx-4 rounded-2xl overflow-hidden animate-scale-in"
             style={{
               background: "linear-gradient(135deg, rgba(15,5,0,0.99) 0%, rgba(8,2,0,0.99) 100%)",
               border: `1px solid ${themeColor}40`,
@@ -138,30 +220,10 @@ export default function HeroSection({ server, onShopClick }: Props) {
 
             <div className="p-6 space-y-5">
               {[
-                {
-                  step: "1",
-                  title: "Скачай лаунчер",
-                  desc: "Установи официальный лаунчер Minecraft с сайта minecraft.net или любой другой поддерживающий версию 1.21.1",
-                  icon: "Download",
-                },
-                {
-                  step: "2",
-                  title: "Запусти версию 1.21.1",
-                  desc: "В лаунчере выбери версию Java Edition 1.21.1 и запусти игру",
-                  icon: "Play",
-                },
-                {
-                  step: "3",
-                  title: "Подключись к серверу",
-                  desc: "Нажми «Мультиплеер» → «Добавить сервер» → введи адрес mc.gamai.club",
-                  icon: "Wifi",
-                },
-                {
-                  step: "4",
-                  title: "Начни играть!",
-                  desc: "Зайди на сервер и погрузись в игру. Добро пожаловать в Gamai Club!",
-                  icon: "Sword",
-                },
+                { step: "1", title: "Скачай лаунчер", desc: "Установи TLauncher, официальный лаунчер или любой другой, поддерживающий версию 1.21.1" },
+                { step: "2", title: "Запусти версию 1.21.1", desc: "В лаунчере выбери Java Edition 1.21.1 и запусти игру" },
+                { step: "3", title: "Подключись к серверу", desc: "Нажми «Мультиплеер» → «Добавить сервер» → введи mc.gamai.club" },
+                { step: "4", title: "Начни играть!", desc: "Зайди на сервер и погрузись в игру. Добро пожаловать!" },
               ].map(item => (
                 <div key={item.step} className="flex gap-4 items-start">
                   <div
@@ -183,7 +245,7 @@ export default function HeroSection({ server, onShopClick }: Props) {
               >
                 <Icon name="Info" size={18} style={{ color: themeColor }} />
                 <p className="text-white/60 font-montserrat text-xs leading-relaxed">
-                  Адрес сервера: <span className="font-rajdhani font-bold text-white/80">mc.gamai.club</span> · Версия Java 1.21.1
+                  Адрес: <span className="font-rajdhani font-bold text-white/80">mc.gamai.club</span> · Java 1.21.1
                 </p>
               </div>
 

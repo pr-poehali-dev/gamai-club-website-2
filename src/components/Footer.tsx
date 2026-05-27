@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const LOGO = "https://cdn.poehali.dev/projects/c58b9026-4e75-48ec-a5cf-93c482f03610/files/6411c323-188e-43dd-ab31-60b784e88c8a.jpg";
+const LOGO = "https://cdn.poehali.dev/projects/c58b9026-4e75-48ec-a5cf-93c482f03610/files/25b7abf2-7c10-4245-8a5c-784434c90167.jpg";
 
 interface Props {
   server: "anarchy" | "classic";
